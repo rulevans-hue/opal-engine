@@ -1,0 +1,16 @@
+# Build output
+*.o
+*.os
+*.obj
+*.obj.import
+*.dll
+*.so
+*.dylib
+*.lib
+*.exp
+*.pdb
+.sconsign*
+godot/bin/
+
+# godot-cpp is cloned separately (see README)
+godot-cpp/

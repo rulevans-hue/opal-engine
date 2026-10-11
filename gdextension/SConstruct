@@ -1,0 +1,82 @@
+#!/usr/bin/env python
+import os, sys
+
+env = SConscript("../godot-cpp/SConstruct")
+
+env.Append(CPPPATH=[
+    "../godot-cpp/include",
+    "../godot-cpp/gen/include",
+    "../godot-cpp/gdextension",
+    "../src",
+    "../gdextension",  # for sdl_compat.h
+])
+
+# Tell headers to use SDL stubs instead of real SDL2
+env.Append(CPPDEFINES=["OPAL_GDEXTENSION"])
+
+if env["platform"] == "windows" and not env.get("use_mingw"):
+    # MSVC compiler — slash-style flags
+    env.Append(CFLAGS=["/std:c11", "/wd4996", "/wd4267", "/wd4244", "/wd4090", "/wd4100", "/wd4113", "/wd4133"])
+    env.Append(CXXFLAGS=["/std:c++17"])
+else:
+    # MinGW (windows) or Linux/macOS — GCC-style flags
+    env.Append(CFLAGS=["-std=c11", "-O2", "-Wno-format-truncation",
+                       "-Wno-unused-parameter"])
+    env.Append(CXXFLAGS=["-std=c++17"])
+
+game_sources = [
+    "../src/combat.c",
+    "../src/stats.c",
+    "../src/skills.c",
+    "../src/party.c",
+    "../src/characters.c",
+    "../src/items.c",
+    "../src/inventory.c",
+    "../src/gamestate.c",
+    "../src/save.c",
+    "../src/events.c",
+    "../src/event_registry.c",
+    "../src/social_stats.c",
+    "../src/bond.c",
+    "../src/time_system.c",
+    "../src/activities.c",
+    "../src/notify.c",
+    "../src/entity.c",
+    "../src/trigger.c",
+    "../src/dungeon.c",
+    "../src/enemy_registry.c",
+    "../src/dungeon_builder.c",
+    "../src/dungeon_db.c",
+    "../src/dungeon_1.c",
+    "../src/dungeon_2.c",
+    "../src/world_builder.c",
+    "../src/world.c",
+    "../src/area_1.c",
+    "../src/dialogue_loader.c",
+    "../src/summon.c",
+    "../src/summon_menu.c",
+    "../src/map.c",
+    "../src/dialogue.c",
+    "../src/npc.c",
+    "../src/equipment.c",
+    "../src/shop.c",
+    "../src/quest.c",
+    "audio_stub.c",
+    "register.cpp",
+    "../src/bond_loader.c",
+    "../src/enemy_loader.c",
+    "../src/dungeon_loader.c",
+    "../src/item_loader.c",
+    "../src/skill_loader.c",
+    "../src/summon_loader.c",
+    "../src/equipment_loader.c"
+]
+
+library = env.SharedLibrary(
+    "../godot/bin/libopal{}{}".format(
+        env["suffix"], env["SHLIBSUFFIX"]
+    ),
+    source=game_sources,
+)
+
+Default(library)
