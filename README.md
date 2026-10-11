@@ -4,9 +4,7 @@ The engine behind **OPAL**, an original turn-based JRPG I'm building solo. The g
 
 This repo holds the engine, the bridge, and the fluid simulation behind the game's UI. The game itself (story, scenes, art, music, and data files) is private.
 
-<!-- Add a 5–10 second capture of the opal UI here, then uncomment:
 ![The opal UI: a real-time fluid simulation rendered as a faceted gem](docs/opal.gif)
--->
 
 ## How it fits together
 
